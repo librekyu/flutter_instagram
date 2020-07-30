@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram/create_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SearchPage extends StatefulWidget {
@@ -13,7 +14,10 @@ class _SearchPageState extends State<SearchPage> {
       body: _buildBody(),
       appBar: _buildAppBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CreatePage()));
+        },
         child: Icon(Icons.create),
         backgroundColor: Colors.blue,
       ),
@@ -54,6 +58,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _clickGridItem(int index) {
-    Fluttertoast.showToast(msg: index.toString());
+    // toast (ios)
+    Fluttertoast.showToast(msg: index.toString(), timeInSecForIosWeb: 1);
   }
+
+  _clickFloatButton() {}
 }

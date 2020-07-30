@@ -4,18 +4,30 @@ import 'package:flutter_instagram/account_page.dart';
 import 'package:flutter_instagram/home_page.dart';
 import 'package:flutter_instagram/search_page.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class TabPage extends StatefulWidget {
+  final FirebaseUser user;
+
+  TabPage(this.user);
+
   @override
   _TabPageState createState() => _TabPageState();
 }
 
 class _TabPageState extends State<TabPage> {
   int _selectedIndex = 0;
-  List _pages = [
-    HomePage(),
-    SearchPage(),
-    AccountPage(),
-  ];
+  List _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      HomePage(widget.user),
+      SearchPage(),
+      AccountPage(widget.user),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
