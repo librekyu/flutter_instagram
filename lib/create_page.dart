@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -68,5 +70,29 @@ class _CreatePageState extends State<CreatePage> {
     } catch (exception) {
       print(exception.toString());
     }
+  }
+
+  void _addImageToDB() {
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('post')
+    .child('${DateTime.now().millisecondsSinceEpoch}.pnb');
+
+    final task = firebaseStorageRef.putFile(
+      File(_image.path), StorageMetadata(contentType: 'image/png'));
+
+    task.onComplete.then((value) {
+      var downloadUrl = value.ref.getDownloadURL();
+
+      downloadUrl.then((uri) {
+        var doc = Firestore.instance.collection('post').document();
+        // 맵 형태로
+        doc.setData({
+          'id': doc.documentID,
+          'photoUrl': uri.toString(),
+
+        });
+      });
+    });
   }
 }
